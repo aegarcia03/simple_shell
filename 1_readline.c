@@ -1,23 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *line = NULL;
 	size_t len = 0;
-	
+	ssize_t nread;
+
 	while (1)
 	{
 		printf("$ ");
-		
-		ssize_t nread = getline(&line, &len, stdin);
+		nread = getline(&line, &len, stdin);
 	
-		if (nread == -1) {
-			break;
+		if (nread == -1)
+		{
+		break;
 		}
 
-		printf("%s", line);
+		printf("$ %s", line);
 	}
+
 	free (line);
-	return (0);
-}	
+	return(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
