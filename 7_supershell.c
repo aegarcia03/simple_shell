@@ -13,7 +13,7 @@ int main(void)
 	ssize_t nread;
 	pid_t child_pid;
 	int status, i;
-
+	char *delimeter = " :'\n''\t'";
 	while (1)
 	{
 		write(STDOUT_FILENO, "SimpleShell$ ", 13);
@@ -25,14 +25,14 @@ int main(void)
 			perror("Exiting shell");
 			exit(1);
 		}
-		token = strtok(line, " \n");
+		token = strtok(line, delimeter);
 
 		command = malloc(sizeof(char *) * 1024);
 		i = 0;
 
-		while (token)
+		while (token != NULL)
 		{	
-			command[i] = token;
+			command[i] = strdup(token);
 			token = strtok(NULL, " ");
 			i++;
 		}
@@ -40,13 +40,8 @@ int main(void)
 
 		child_pid = fork();
 	
-		if (child_pid == -1)
+		if (!child_pid)
 		{
-			perror("Failed to create");
-			exit(1);
-		}
-		if (child_pid == 0)
-		{	
 			if (execve(command[0], command, NULL) == -1)
 			{	
 				perror("Could not execute");

@@ -8,4 +8,12 @@
 #include <sys/wait.h>
 #include <string.h>
 
+typedef struct aliases {
+	char *alias_name;
+	char *real_name;
+} alias;
+
+extern alias my_aliases[];
+
 #endif /* MAIN_H */
+
