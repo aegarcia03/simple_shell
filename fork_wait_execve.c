@@ -13,6 +13,7 @@ int main(void)
 	pid_t child_pid;
 	int status;
 	char *argv[] = {"/bin/ls", "-l", "/tmp/", NULL};
+	char *envp[] = {NULL};
 	int i;
 	
 	for (i = 0; i < 5; i++)
@@ -26,7 +27,7 @@ int main(void)
 		}
 		if (child_pid == 0)
 		{	
-			if(execv(argv[0], argv) == -1)
+			if(execve(argv[0], argv, envp) == -1)
 			{
 				perror("Error:");
 				_exit(1);
