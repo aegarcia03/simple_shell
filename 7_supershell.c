@@ -5,11 +5,10 @@
  *
  * Return: 0
  */
-int main(int argc, char *argv[])
+int main(void)
 {
-	(void)argc;(void)argv;
 	char *line = NULL, *token;
-	char **array;
+	char **command;
 	size_t len = 0;
 	ssize_t nread;
 	pid_t child_pid;
@@ -20,23 +19,25 @@ int main(int argc, char *argv[])
 		write(STDOUT_FILENO, "SimpleShell$ ", 13);
 
 		nread = getline(&line, &len, stdin);
+	
 		if (nread == -1)
 		{
 			perror("Exiting shell");
 			exit(1);
 		}
+		token = strtok(line, " \n");
 
-		token = strtok(line, "\n");
-		
-		array = malloc(sizeof(char *) * 1024);
+		command = malloc(sizeof(char *) * 1024);
 		i = 0;
+
 		while (token)
 		{	
-			array[i] = token;
-			token = strtok(NULL, "\n");
+			command[i] = token;
+			token = strtok(NULL, " ");
 			i++;
 		}
-		array[i] = NULL; 
+		command[i] = NULL;
+
 		child_pid = fork();
 	
 		if (child_pid == -1)
@@ -46,7 +47,7 @@ int main(int argc, char *argv[])
 		}
 		if (child_pid == 0)
 		{	
-			if (execve(array[0], array, NULL) == -1)
+			if (execve(command[0], command, NULL) == -1)
 			{	
 				perror("Could not execute");
 				exit(1);
