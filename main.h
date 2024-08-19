@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <sys/stat.h>
 
 typedef struct aliases {
 	char *alias_name;
